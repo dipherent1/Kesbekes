@@ -1,0 +1,8 @@
+<!-- task_manager/templates/task_manager/welcome.html -->
+{% extends 'task_manager/base.html' %}
+
+{% block content %}
+<h2>Welcome to Kesbekes</h2>
+<p>Kesbekes is an AI-powered time management and scheduling app.</p>
+<p>Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'signup' %}">sign up</a> to get started.</p>
+{% endblock %}

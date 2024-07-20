@@ -1,0 +1,14 @@
+{% extends 'task_manager/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Today's Tasks</h1>
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.title }} at {{ task.time }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_task' %}">Add Task</a>
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

@@ -37,9 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'calendar_app',
-    'chatbot',
-    'users',
+    'task_manager',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +101,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -124,3 +132,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import os
+GOOGLE_GEMINI_KEY = "AIzaSyDp6kukZW6rp6ovDuIH2ZuhL8bGOykFTa8"
+# LOGIN_REDIRECT_URL = 'home'
+# LOGIN_URL = 'login'
+# LOGOUT_REDIRECT_URL = 'signup'
