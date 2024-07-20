@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 genai.configure(api_key=os.getenv("GOOGLE_GEMINI_KEY", "AIzaSyDp6kukZW6rp6ovDuIH2ZuhL8bGOykFTa8"))
 model = genai.GenerativeModel('gemini-pro')
 
-def get_ai_response(task, user_preferences, upcoming_tasks):
+def get_ai_response(task, user_preferences, upcoming_tasks, current_time):
     tasks_str = "\n".join([f"{task.title} priority {task.priority} difficulty {task.difficulty} at {task.time} on {task.date}" for task in upcoming_tasks])
     productive_hours_str = ", ".join(user_preferences.productive_hours)
     prompt = f"""
@@ -16,18 +16,20 @@ def get_ai_response(task, user_preferences, upcoming_tasks):
     Productive hours: {productive_hours_str}
     Preferred categories: {', '.join(user_preferences.preferred_categories)}
 
+    Current date and time: {current_time}
+
     And the following upcoming tasks:
     {tasks_str}
 
     Analyze this new task:
-    {task.title} priority {task.priority} difficulty {task.difficulty} at {task.time} on {task.date}
+    {task['title']} priority {task['priority']} difficulty {task['difficulty']} at {task['time']} on {task['date']}
 
     Is this a good time for this task? If not, suggest top 3 alternative times within the next 7 days.
     """
     response = model.generate_content(prompt)
     return response.text
 
-def analyze_task(task_text):
+def analyze_task(task_text, current_time):
     prompt = f"""
     Analyze the following task description and extract the following information:
     - Task title
@@ -35,6 +37,7 @@ def analyze_task(task_text):
     - Date and time
     - Priority level (high, medium, low)
     - Difficulty level (high, medium, low)
+    - Current date and time: {current_time}
 
     Task: {task_text}
 

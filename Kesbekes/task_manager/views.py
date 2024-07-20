@@ -5,8 +5,9 @@ from django.contrib import messages
 from .models import UserProfile, Task
 from .forms import CustomUserCreationForm, UserProfileForm, TaskForm
 from .ai_manager import analyze_task, get_ai_response
-from datetime import datetime
+from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+
 def signup_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -62,13 +63,37 @@ def add_task_view(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             task_description = form.cleaned_data['description']
-            task_details = analyze_task(task_description)
+            current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            task_details = analyze_task(task_description, current_time)
             user_profile = UserProfile.objects.get(user=request.user)
             upcoming_tasks = Task.objects.filter(user=request.user, date__gte=datetime.today(), date__lte=datetime.today() + timedelta(days=7))
-            ai_response = get_ai_response(task_details, user_profile, upcoming_tasks)
+            ai_response = get_ai_response(task_details, user_profile, upcoming_tasks, current_time)
 
             messages.success(request, 'Task analyzed successfully.')
             return render(request, 'task_manager/task_analysis.html', {'task_details': task_details, 'ai_response': ai_response})
     else:
         form = TaskForm()
     return render(request, 'task_manager/add_task.html', {'form': form})
+@login_required
+def confirm_task_view(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        date = request.POST['date']
+        time = request.POST['time']
+        priority = request.POST['priority']
+        difficulty = request.POST['difficulty']
+
+        Task.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            date=date,
+            time=time,
+            priority=priority,
+            difficulty=difficulty
+        )
+
+        messages.success(request, 'Task added successfully.')
+        return redirect('home')
+    return redirect('add_task')

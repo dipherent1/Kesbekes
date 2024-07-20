@@ -1,0 +1,30 @@
+{% extends 'task_manager/base.html' %}
+
+{% block title %}Task Analysis{% endblock %}
+
+{% block content %}
+<h1>Task Analysis</h1>
+<h2>Task Details</h2>
+<ul>
+    <li>Title: {{ task_details.title }}</li>
+    <li>Description: {{ task_details.description }}</li>
+    <li>Date: {{ task_details.date }}</li>
+    <li>Time: {{ task_details.time }}</li>
+    <li>Priority: {{ task_details.priority }}</li>
+    <li>Difficulty: {{ task_details.difficulty }}</li>
+</ul>
+
+<h2>AI Schedule Suggestion</h2>
+<p>{{ ai_response }}</p>
+
+<form method="post" action="{% url 'confirm_task' %}">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{ task_details.title }}">
+    <input type="hidden" name="description" value="{{ task_details.description }}">
+    <input type="hidden" name="date" value="{{ task_details.date }}">
+    <input type="hidden" name="time" value="{{ task_details.time }}">
+    <input type="hidden" name="priority" value="{{ task_details.priority }}">
+    <input type="hidden" name="difficulty" value="{{ task_details.difficulty }}">
+    <button type="submit">Confirm Task</button>
+</form>
+{% endblock %}
