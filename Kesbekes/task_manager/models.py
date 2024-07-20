@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    wake_up_time = models.TimeField()
-    sleep_time = models.TimeField()
+    wake_up_time = models.CharField(max_length=255)
+    sleep_time = models.CharField(max_length=255)
     productive_hours = models.CharField(max_length=255)
     preferred_categories = models.CharField(max_length=255)
     # study_duration = models.IntegerField()  # in minutes

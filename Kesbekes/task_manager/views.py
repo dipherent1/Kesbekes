@@ -20,17 +20,20 @@ def signup_view(request):
             messages.success(request, 'Account created successfully. Please login.')
             return redirect('login')
         else:
+            # Log form errors for debugging
+            print("User Creation Form Errors:", form.errors)
+            print("User Profile Form Errors:", profile_form.errors)
             messages.error(request, 'Form is not valid. Please check the data and try again.')
             if User.objects.filter(username=request.POST.get('username')).exists():
                 messages.error(request, 'Username already exists.')
             if User.objects.filter(email=request.POST.get('email')).exists():
                 messages.error(request, 'Email already exists.')
-            print("Form errors:", form.errors)
-            print("Profile form errors:", profile_form.errors)
     else:
         form = CustomUserCreationForm()
         profile_form = UserProfileForm()
     return render(request, 'task_manager/signup.html', {'form': form, 'profile_form': profile_form})
+
+
 
 def login_view(request):
     if request.method == 'POST':

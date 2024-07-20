@@ -33,21 +33,33 @@ def analyze_task(task_text, current_time):
     prompt = f"""
     Analyze the following task description and extract the following information:
     - Task title
-    - Task description
-    - Date and time
-    - Priority level (high, medium, low)
-    - Difficulty level (high, medium, low)
+    - Task description u can make assumption by using context
+    - Date and time, return the target time and date only as requested in output, 
+    - Priority level (high, medium, low) only answer with (high, medium, low), u can make assumption by using context dont dont add additional information
+    - Difficulty level (high, medium, low) only answer with (high, medium, low), u can make assumption by using context dont add additional information
     - Current date and time: {current_time}
 
     Task: {task_text}
 
-    Return the information in the following format:
+    Return the information in the following format only, dont need explantion or discription:
     Title: [task title]
     Description: [task description]
     Date: [YYYY-MM-DD]
     Time: [HH:MM]
     Priority: [priority level]
     Difficulty: [difficulty level]
+
+
+    for example
+    if Task is - i have an important meeting after 2 hrs and  Current date and time is 1:00 AM july 21
+
+    output: 
+
+    Description: Attend an important meeting
+    Date: 2024-07-21
+    Time: 03:00
+    Priority: High 
+    Difficulty: Low 
     """
     response = model.generate_content(prompt)
     lines = response.text.strip().split('\n')

@@ -21,9 +21,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = [
-            'wake_up_time', 'sleep_time', 'productive_hours', 'preferred_categories',
-            'study_duration', 'study_environment', 'major', 'year_of_study',
-            'recurring_commitments', 'learning_style', 'short_term_goals', 'long_term_goals'
+            'wake_up_time', 'sleep_time', 'productive_hours', 'preferred_categories'
         ]
 
 class TaskForm(forms.Form):
