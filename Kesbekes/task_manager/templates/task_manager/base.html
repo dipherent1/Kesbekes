@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Kesbekes{% endblock %}</title>
+    <title>{% block title %}My Application{% endblock %}</title>
 </head>
 <body>
-    {% if messages %}
+    <nav>
         <ul>
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'add_task' %}">Add Task</a></li>
+            <li><a href="{% url 'calendar' %}">Calendar</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
-    {% endif %}
-    {% block content %}
-    {% endblock %}
+    </nav>
+    {% block content %}{% endblock %}
 </body>
 </html>

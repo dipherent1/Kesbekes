@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+</head>
+<body>
+    <h1>Calendar - {{ month }}/{{ year }}</h1>
+    <table border="1">
+        <tr>
+            {% for day in month_days %}
+                {% if day != 0 %}
+                    <td>
+                        <a href="{% url 'day_tasks' year month day %}">{{ day }}</a>
+                        <ul>
+                            {% if day in tasks_by_day %}
+                                {% for task in tasks_by_day|default_if_none:""|add:day %}
+                                    <li>{{ task.title }}</li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+</body>
+</html>

@@ -24,3 +24,6 @@ class Task(models.Model):
     time = models.TimeField()
     priority = models.CharField(max_length=50)
     difficulty = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title

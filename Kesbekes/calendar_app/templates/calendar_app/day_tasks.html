@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks for {{ day }}/{{ month }}/{{ year }}</title>
+</head>
+<body>
+    <h1>Tasks for {{ day }}/{{ month }}/{{ year }}</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.title }}</strong>: {{ task.description }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'calendar' %}">Back to Calendar</a>
+</body>
+</html>
