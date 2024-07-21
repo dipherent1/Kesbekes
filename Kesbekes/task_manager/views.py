@@ -33,8 +33,6 @@ def signup_view(request):
         profile_form = UserProfileForm()
     return render(request, 'task_manager/signup.html', {'form': form, 'profile_form': profile_form})
 
-
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -68,7 +66,18 @@ def add_task_view(request):
             task_description = form.cleaned_data['description']
             current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             task_details = analyze_task(task_description, current_time)
-            user_profile = UserProfile.objects.get(user=request.user)
+            if not task_details:
+                messages.error(request, 'Failed to analyze task. Please try again.')
+                return redirect('add_task')
+            
+            try:
+                user_profile = UserProfile.objects.get(user=request.user)
+            except UserProfile.DoesNotExist:
+                messages.error(request, 'UserProfile does not exist. Please complete your profile.')
+                return redirect('complete_profile')  # Redirect to a view where the user can complete their profile
+            
+            print(user_profile.wake_up_time)
+            print(user_profile.objects.all())
             upcoming_tasks = Task.objects.filter(user=request.user, date__gte=datetime.today(), date__lte=datetime.today() + timedelta(days=7))
             ai_response = get_ai_response(task_details, user_profile, upcoming_tasks, current_time)
 
@@ -77,6 +86,22 @@ def add_task_view(request):
     else:
         form = TaskForm()
     return render(request, 'task_manager/add_task.html', {'form': form})
+
+def complete_profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == 'POST':
+        profile_form = UserProfileForm(request.POST)
+        if profile_form.is_valid():
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            messages.success(request, 'Profile completed successfully.')
+            return redirect('home')
+    else:
+        profile_form = UserProfileForm()
+    return render(request, 'task_manager/complete_profile.html', {'profile_form': profile_form})
+
 @login_required
 def confirm_task_view(request):
     if request.method == 'POST':

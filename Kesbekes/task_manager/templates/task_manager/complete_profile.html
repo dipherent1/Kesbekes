@@ -1,0 +1,12 @@
+{% extends 'task_manager/base.html' %}
+
+{% block title %}Complete Profile{% endblock %}
+
+{% block content %}
+<h1>Complete Profile</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ profile_form.as_p }}
+    <button type="submit">Save Profile</button>
+</form>
+{% endblock %}
