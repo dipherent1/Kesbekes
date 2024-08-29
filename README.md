@@ -20,3 +20,6 @@ This project is still in the prototype phase and hasn't included all planned fea
 is on the repository's master branch
 
 ## Use your own Gemini API key before use
+
+### For more information please look at our pitch deck below
+https://www.canva.com/design/DAGLausFMSQ/XBz6QomSDv5AztHIubb_Uw/edit?utm_content=DAGLausFMSQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
